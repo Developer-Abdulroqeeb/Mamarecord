@@ -67,7 +67,7 @@ class ForgetPasswordController extends Controller
 public function verifyOtp(Request $request)
 {
     $validator = Validator::make($request->all(), [
-       'userId' => "required|numeric",
+    //    'userId' => "required|numeric",
         'otp' => 'required|numeric'
     ]);
 
@@ -100,21 +100,21 @@ public function verifyOtp(Request $request)
  
   public function resendOtp(Request $request)
   {
-      $validator = Validator::make($request->all(), [
-          'email' => 'required|string|email',
-          'userId' => 'required|numeric'
-      ]);
+    //   $validator = Validator::make($request->all(), [
+        //   'email' => 'required|string|email',
+        //   'userId' => 'required|numeric'
+    //   ]);
   
-      if ($validator->fails()) {
-          return response()->json([
-              'status' => false,
-              'error' => $validator->errors()->first()
-          ], 422);
-      }
+    //   if ($validator->fails()) {
+    //       return response()->json([
+    //           'status' => false,
+    //           'error' => $validator->errors()->first()
+    //       ], 422);
+    //   }
   
       // 🔍 Find the user using the provided email and userId
-      $user = User::where('id', $request->userId)
-                  ->where('email', $request->email)
+      $userId = Session::get('userId');
+      $user = User::where('id', $userId)
                   ->first();
   
       if (!$user) {

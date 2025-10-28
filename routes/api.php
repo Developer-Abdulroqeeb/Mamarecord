@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -33,6 +34,9 @@ Route::get('/test', function () {
 });
 
 Route::middleware('auth:sanctum')->group(function(){
-  
+  //  product side
+  Route::post('/addproduct', [AddProductController::class, 'addproduct']);
+  Route::get('/allproduct', [AddProductController::class, "allproduct"]);
+  Route::get("/producthistory", [AddProductController::class, "producthistory"]);
 });
 

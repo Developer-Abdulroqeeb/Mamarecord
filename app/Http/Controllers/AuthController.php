@@ -40,17 +40,18 @@ public function register(Request $request){
     'email' => $request->email,
     'password' => Hash::make($request->password)
  ]);
+ $token = $user->createToken('auth_token')->plainTextToken;
  $mail = Mail::to($request->email)->send(new welcomeMail($user));
 
 //  if($mail){
     return response()->json([
         "message" => "User Created Successfully",
          'data' => $user,
-      //    'token' => $token
+      "token" => $token
        ], 201);
 //  }
 
- 
+                           
 }
 
 // login to the dashboard
@@ -68,6 +69,7 @@ if($check->fails()){
     , 422]);
 }
   $user = User::where('email', $request->email)->first();  
+  $token = $user->createToken('auth_token')->plainTextToken;
   if(!$user || !Hash::check( $request->password,$user->password)){
   return response()->json([
      "status" => false,
@@ -76,7 +78,8 @@ if($check->fails()){
   }
     return response()->json([
   "data" => $user,
-  "status" => true
+  "status" => true,
+  "token" => $token
     ]);
     
 
