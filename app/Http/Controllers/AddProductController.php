@@ -23,7 +23,7 @@ class AddProductController extends Controller
             'SellinPerUnit' => 'required|numeric',
             'ReorderLevel' => 'numeric',
             'SupplierName' => 'required|string',
-            'last_update' => 'required|date', // or 'string' if it's not a date
+            
             'description' => 'required|string'
         ]);
         
@@ -45,7 +45,7 @@ class AddProductController extends Controller
         'SellinPerUnit' => $request->SellinPerUnit,
         'ReorderLevel' => $request->ReorderLevel,
         'SupplierName' => $request->SupplierName,
-        'last_update' => $request->last_update,
+       
         'userId' => $userId,
         'description' => $request->description
     ]);
@@ -60,7 +60,7 @@ class AddProductController extends Controller
                 'SellinPerUnit' => $request->SellinPerUnit,
                 'ReorderLevel' => $request->ReorderLevel,
                 'SupplierName' => $request->SupplierName,
-                'last_update' => $request->last_update,
+           
                 'description' => $request->description
             ]);
             return response()->json([
@@ -78,7 +78,7 @@ class AddProductController extends Controller
                 'SellinPerUnit' => $request->SellinPerUnit,
                 'ReorderLevel' => $request->ReorderLevel,
                 'SupplierName' => $request->SupplierName,
-                'last_update' => $request->last_update,
+         
                 'userId' => $userId,
                 'description' => $request->description
             ]);

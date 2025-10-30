@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,5 +39,9 @@ Route::middleware('auth:sanctum')->group(function(){
   Route::post('/addproduct', [AddProductController::class, 'addproduct']);
   Route::get('/allproduct', [AddProductController::class, "allproduct"]);
   Route::get("/producthistory", [AddProductController::class, "producthistory"]);
+ 
+  //  Sales side
+   Route::post("/addsale", [SalesController::class, "addsale"]);
+   Route::post("/searchsale", [SalesController::class, "searchsale"]);
 });
 

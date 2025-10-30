@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('producthistories', function (Blueprint $table) {
             $table->id();
-            $table->string('ProductName');
-            $table->string('StockQnty');
-            $table->string('Unit');
-            $table->string('CostPerUnit');
-            $table->string('SellinPerUnit');
-            $table->string('ReorderLevel');
-            $table->string('SupplierName');
+            $table->string('ProductName')->nullable();
+            $table->string('StockQnty')->nullable();
+            $table->string('Unit')->nullable();
+            $table->string('CostPerUnit')->nullable();
+            $table->string('SellinPerUnit')->nullable();
+            $table->string('ReorderLevel')->nullable();
+            $table->string('SupplierName')->nullable();
             $table->timestamp('last_update')->useCurrent()->useCurrentOnUpdate();        
+            $table->unsignedBigInteger('userId');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->string('description'); 
             $table->timestamps();

@@ -1,0 +1,104 @@
+   mamarecord breakdown
+1. Inventory/Product Side
+  Add product
+  All product (Having search too with respect to product name
+  Product Log(Having search too with respect to product name)
+View Adjustment Module (Stock Adjustment)
+🎯 Purpose
+To record and view manual stock adjustments — when the actual physical stock doesn’t match what’s in the system.
+For example:
+Lost or damaged goods
+Goods returned by customers
+Mistakes during entry
+Manual corrections by admin
+
+2. Sale
+   Add sale(Can do multiple sales)
+   All Sales(Having search too with respect to product name and date purchase)
+3. Transactions
+    3.1 Sales Point
+       Record a Sale
+
+Select product from dropdown (fetched from products table).
+
+Enter quantity sold.
+
+Enter price per unit (or use default from product list).
+Auto-calculate total sale amount.
+
+Submit → creates a record in a new table, e.g., sales.
+
+Automatic Stock Update
+
+When a sale is recorded, the product’s StockQnty decreases automatically.
+
+If quantity sold > available stock, show an error.
+
+   3.2 expenses
+    Add Expense
+
+Expense Title / Description (e.g., “Bought pepper from supplier”)
+Expense Category (e.g., Stock purchase, Transport, Wages)
+Amount Spent
+Date (auto-filled, but editable)
+Optional: Payment Method (cash, transfer, etc.)
+Expense List / History
+
+Table showing:
+Date
+Description
+Category
+Amount
+User (who recorded it)
+Summary View
+Total expenses for today, this week, or this month.
+Can be compared against total sales for profit/loss estimation.
+
+  3.3 payment
+Record Payment
+Choose Type → Incoming or Outgoing
+Source Reference → e.g., select a sale, supplier, or expense related to it
+Amount Paid
+Payment Method → Cash, Transfer, POS, etc.
+Date Paid (auto-filled)
+Recorded By (auto from logged-in user)
+Payment History
+Show all payments with filters (by date, type, method, or user)
+Payment Summary
+Total Incoming vs Outgoing
+Outstanding Balances (if linked to sales on credit)
+  3.4 Sales List
+
+  These two sections are usually placed under your “Sales Point” menu or as separate items under Transactions.
+They give the user visibility into every sale made and summaries of sales performance over time.
+✅ View all sales (paginated)
+🔍 Search by product name, date, or user
+📅 Filter by date range (Today, This Week, This Month)
+📊 Option to export (Excel / PDF)
+🧾 Optional: Click a sale to view detailed breakdown
+
+ 4 Payment Analysis
+
+Metric	Description
+💵 Total Incoming Payments	Sum of all payments from customers (type = incoming)
+💸 Total Outgoing Payments	Sum of all supplier or expense payments (type = outgoing)
+💰 Net Cash Flow	Incoming − Outgoing
+🏦 Payment Count	Total number of payment entries
+📅 Payments This Month	Filtered by current month
+ 5. Folio
+Let’s say you have:
+Customers who buy on credit
+Suppliers you owe money
+Sales agents who handle float or sales
+
+
+Each of them can have a folio showing:
+Sales they made or received
+Payments they’ve made or received
+Balances (amount owed or to collect)
+  the table
+📂 Example: Customer Folio
+Date	Description	Debit (What They Owe)	Credit (What They Paid)	Balance
+Oct 25	Purchase of rice	₦20,000	-	₦20,000
+Oct 26	Payment received	-	₦15,000	₦5,000
+Oct 28	Extra purchase	₦10,000	-	₦15,000
