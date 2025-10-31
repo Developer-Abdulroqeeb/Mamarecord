@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('expense_category')->nullable();
             $table->decimal('amount')->nullable();
             $table->string('payment_method')->nullable();
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('date')->useCurrent()->useCurrentOnUpdate(); 
             $table->timestamps();
         });

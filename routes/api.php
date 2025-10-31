@@ -4,6 +4,7 @@ use App\Http\Controllers\AddProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\SalesController;
 use Illuminate\Auth\Events\Login;
@@ -30,9 +31,9 @@ Route::post('/resetPassword', [ForgetPasswordController::class, "resetPassword"]
 Route::post('/verifyOtp', [ForgetPasswordController::class, "verifyOtp"]);
 // resend otp
 Route::post('resendOtp/', [ForgetPasswordController::class, 'resendOtp']);
-Route::get('/test', function () {
-     return 'ok';
-});
+// Route::get('/test', function () {
+//      return 'ok';
+// });
 
 Route::middleware('auth:sanctum')->group(function(){
   //  product side
@@ -43,5 +44,10 @@ Route::middleware('auth:sanctum')->group(function(){
   //  Sales side
    Route::post("/addsale", [SalesController::class, "addsale"]);
    Route::post("/searchsale", [SalesController::class, "searchsale"]);
+   Route::get("/allsale", [SalesController::class, "allsale"]);
+
+   //    expenses
+Route::post("/addexpense", [ExpenseController::class, "addexpense"]);
+Route::get("/expensehistory", [ExpenseController::class, "expensehistory"]);
 });
 

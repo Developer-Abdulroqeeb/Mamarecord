@@ -126,4 +126,15 @@ $userId = auth()->user()->id;
         "data" => $sales
     ]);
 }
+  public function allsale(Request $request){
+    $userId = auth()->user()->id;
+
+     $allsale = sale::where('userId',$userId )->get();
+
+     return response()->json([
+    "message" => true,
+    "data" => $allsale
+     ],202);
+  
+  }
 }
