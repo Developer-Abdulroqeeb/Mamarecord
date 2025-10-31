@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SalesController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +47,14 @@ Route::middleware('auth:sanctum')->group(function(){
    Route::post("/searchsale", [SalesController::class, "searchsale"]);
    Route::get("/allsale", [SalesController::class, "allsale"]);
 
-   //    expenses
+   // expenses
 Route::post("/addexpense", [ExpenseController::class, "addexpense"]);
 Route::get("/expensehistory", [ExpenseController::class, "expensehistory"]);
+
+// Payment History/sum of payment/Search for Payment
+ Route::get('/payment_history', [PaymentController::class, 'payment_history']); 
+ Route::get('totalpayment',[PaymentController::class, 'totalpayment'] );
+ Route::get('countpayment',[PaymentController::class, 'countpayment'] );
+
 });
 

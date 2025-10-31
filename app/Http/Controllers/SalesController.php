@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Salesummary;
 use App\Models\product;
 use Illuminate\Routing\Controller;
 use App\Models\sale;
@@ -22,7 +22,10 @@ public function addsale(Request $request)
         'sales.*.product_id' => 'required|numeric',
         'sales.*.Quantity' => 'required|numeric',
         'sales.*.price' => 'required|numeric',
-        'sales.*.seller_name' => 'nullable|string'
+        'sales.*.seller_name' => 'nullable|string',
+        'amount_paid' => 'required|numeric',
+        'payment_method' => 'required|string'
+
     ]);
 
     if ($validator->fails()) {
@@ -31,9 +34,24 @@ public function addsale(Request $request)
             "error" => $validator->errors()->first()
         ]);
     }
+//  record the amount
+$totalAmount = 0;
+foreach ($request->sales as $sale) {
+    $totalAmount += $sale['price'] * $sale['Quantity'];
+}
 
-    $inserted = [];
-    $totalAmount = 0;
+$balance = $totalAmount - $request->amount_paid;
+
+// Step 2: create ONE summary record
+$summary = Salesummary::create([
+    'userId' => $userId,
+    'total_amount' => $totalAmount,
+    'amount_paid' => $request->amount_paid,
+    'balance' => $balance,
+    'payment_method' => $request->payment_method
+]);
+
+
     foreach ($request->sales as $sale) {
         // Find the product
         $product = product::where([
@@ -62,6 +80,7 @@ public function addsale(Request $request)
                 "error" => "The price did not correlate with our price tag for"." " . $sale['product_name']
             ]);
          }
+
         // Deduct the sold quantity
         $newQuantity = $product->StockQnty - $sale['Quantity'];
 
@@ -70,6 +89,8 @@ public function addsale(Request $request)
             'StockQnty' => $newQuantity
         ]);
 
+
+       
         // Record the sale
         $inserted[] = Sale::create([
             'product_name' => $sale['product_name'],
@@ -78,11 +99,13 @@ public function addsale(Request $request)
             'price' => $sale['price'],
             'seller_name' => $sale['seller_name'] ?? null,
             'userId' => $userId,
+            'paymentId' => $summary->id
         ]);
 
         $itemTotal = $sale['Quantity'] * $sale['price'];
         $totalAmount += $itemTotal; // 👈 add to total
     }
+   
 
     return response()->json([
         "message" => true,
@@ -130,11 +153,12 @@ $userId = auth()->user()->id;
     $userId = auth()->user()->id;
 
      $allsale = sale::where('userId',$userId )->get();
-
      return response()->json([
     "message" => true,
     "data" => $allsale
      ],202);
   
   }
+
+
 }

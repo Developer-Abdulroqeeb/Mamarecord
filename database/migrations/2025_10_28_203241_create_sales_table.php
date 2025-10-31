@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('seller_name')->nullable();
             $table->unsignedBigInteger('userId');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('paymentId')->constrained('salesummaries')->onDelete('cascade');
             $table->timestamps();
         });
     }

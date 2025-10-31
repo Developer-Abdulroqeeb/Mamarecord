@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Salesummary;
 class sale extends Model
 {
     use HasFactory;
@@ -18,4 +18,11 @@ class sale extends Model
             $sale->subtotal = $sale->price * $sale->Quantity;
         });
     }
+    public function summary()
+    {
+        return $this->belongsTo(Salesummary::class, 'paymentId');
+    }
+    
+
+
 }
