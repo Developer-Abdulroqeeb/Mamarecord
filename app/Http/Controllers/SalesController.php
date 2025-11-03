@@ -24,7 +24,7 @@ public function addsale(Request $request)
         'sales.*.price' => 'required|numeric',
         'sales.*.seller_name' => 'nullable|string',
         'amount_paid' => 'required|numeric',
-        'payment_method' => 'required|string'
+        'payment_method' => 'nullable|string'
 
     ]);
 
@@ -115,38 +115,32 @@ $summary = Salesummary::create([
 }
 
 //    search for sale
-public function searchsale(Request $request){
-  
-       $validate = Validator::make($request->all(),
-         [
-            "date" => 'nullable|date',
-            "search" => 'nullable|string'
-         ]
-);
-if($validate->fails()){
-     return response()->json([
-     "messag" => false,
-     "error" => $validate->errors()->first()
-     ]);
+
+public function searchsale(Request $request)
+{
+    $userId = auth()->user()->id;
+
+    $query = sale::where('userId', $userId);
+
+    // Optional filter by payment method
+    if ($request->has('product_name')) {
+        $query->where('product_name', $request->product_name);
+    }
+  // Optional filter by date range
+  if ($request->has(['from_date', 'to_date'])) {
+    $query->whereBetween('created_at', [$request->from_date, $request->to_date]);
 }
-$userId = auth()->user()->id;
-    $date = $request->date;
-    $search = $request->search;
-       
-    $sales = sale::where('userId', $userId)
-    ->when($request->date, function ($query, $date) {
-        $query->whereDate('date', $date);
-    })
-    ->when($request->search, function ($query, $search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('product_name', 'LIKE', "%{$search}%")
-              ->orWhere('seller_name', 'LIKE', "%{$search}%");
-        });
-    })
-    ->get();
+  
+ // Optional filter by seller name
+ if ($request->has('seller_name')) {
+    $query->where('seller_name', $request->seller_name);
+}
+
+    $sale = $query->get();
+
     return response()->json([
-        "message" => true,
-        "data" => $sales
+        'message' => true,
+        'data' => $sale
     ]);
 }
   public function allsale(Request $request){

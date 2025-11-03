@@ -113,5 +113,29 @@ class AddProductController extends Controller
   "data" => $producthistory
   ], 302);
     }
+
+    // search for product
+    public function searchproduct(Request $request)
+{
+    $userId = auth()->user()->id;
+
+    $query = product::where('userId', $userId);
+
+    // Optional filter by payment method
+    if ($request->has(' ProductName')) {
+        $query->where('ProductName', $request->ProductName);
+    }
+  // Optional filter by date range
+  if ($request->has(['from_date', 'to_date'])) {
+    $query->whereBetween('created_at', [$request->from_date, $request->to_date]);
+}
+    $product = $query->get();
+
+    return response()->json([
+        'message' => true,
+        'data' => $product
+    ]);
+}
+
 }
 
